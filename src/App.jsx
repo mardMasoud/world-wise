@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import Product from "./pages/Product";
 import Homepage from "./pages/Homepage";
 import Pricing from "./pages/Pricing";
@@ -12,10 +12,13 @@ export default function App() {
     const [cities,setCities]=useState([])
     useEffect(function(){
         async function fetchcity(){
-            const data = await fetch('http://localhost:9000/cities')
-            cons
+            const res = await fetch('http://localhost:8000/cities')
+            const data =await res.json()
+     
+            setCities(data)
         }
-    },[cities])
+        fetchcity()
+    },[])
     return (
       
             <BrowserRouter>
@@ -25,10 +28,11 @@ export default function App() {
                     <Route path="pricing" element={<Pricing />} />
                     <Route path="*" element={<PageNotFound />} />
                     <Route path="app" element={<AppLayout/>}>
-                        <Route index  element={<CityList/>}/>
-                        <Route path="cities" element={<CityList/>}/>
+                        <Route index  element={<CityList/>} cities={cities}/>
+                        <Route path="cities" element={<CityList cities={cities}/>}/>
                         <Route path="countries" element={<p>List Of countries</p>}/>
                         <Route path="form" element={<p>form</p>}/>
+                      <Route path="cities/:id" element={<City cities={cities}/>}/>
                         <Route path="login" element={<Login/>}/>
                     </Route>
                     <Route path="login" element={<Login/>}/>
