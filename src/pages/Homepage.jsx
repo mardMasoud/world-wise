@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import styles from "./Homepage.module.css";
 import PageNav from '../components/PageNav'
 import Logo from '../components/Logo'
+import { useContext } from "react";
 export default function Homepage() {
+  
+
   return (
     <main className={styles.homepage}>
       

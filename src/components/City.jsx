@@ -1,6 +1,9 @@
 import { useParams } from "react-router-dom";
 import styles from "./City.module.css";
 
+
+import { useCities } from "../CitiesContext";
+import { useEffect, useState } from "react";
 const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
         day: "numeric",
@@ -9,13 +12,23 @@ const formatDate = (date) =>
         weekday: "long",
     }).format(new Date(date));
 
-function City({ cities }) {
+function City() {
     // TEMP DATA
+    // const { getCity }= useCities()
     const { id } = useParams();
+    const [currentCity,setCurrentCity]=useState({})
+    useEffect(function () {
+        async function getCity(id) {
+            const res = await fetch(`http://localhost:8000/cities/${id}`);
+            const data = await res.json();
   
+            setCurrentCity(data);
+        }
+        getCity(id);
+    }, [id]);
     // return <p>masoud</p>
-    const { cityName, notes, emoji ,date} = cities.find((city) => city.id == id);
-
+    //  = cities.find((city) => city.id == id);
+const { cityName, notes, emoji ,date} = currentCity
     return (
         <div className={styles.city}>
             <div className={styles.row}>
